@@ -4,7 +4,9 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const exphbs = require('express-handlebars');
 const passport = require('passport');
+const mongoose = require('mongoose');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const connectDB = require('./config/db');
 const indexRoutes = require('./routes/index');
 const authRoutes = require('./routes/auth');
@@ -35,6 +37,7 @@ app.use(
         secret: 'storyBook secret',
         resave: false,
         saveUninitialized: false,
+        store: new MongoStore({ mongooseConnection: mongoose.connection })
     })
 );
 
