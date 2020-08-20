@@ -10,6 +10,7 @@ const MongoStore = require('connect-mongo')(session);
 const connectDB = require('./config/db');
 const indexRoutes = require('./routes/index');
 const authRoutes = require('./routes/auth');
+const storiesRoutes = require('./routes/stories');
 
 //load config
 dotenv.config({ path: './config/config.env' });
@@ -21,6 +22,10 @@ require('./config/passport')(passport);
 connectDB();
 
 const app = express();
+
+//body parser
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 //logging
 if (process.env.NODE_ENV == 'development') {
@@ -51,6 +56,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //routes
 app.use('/', indexRoutes);
 app.use('/auth', authRoutes);
+app.use('/stories', storiesRoutes);
 
 //listen
 const PORT = process.env.PORT || 3000;
